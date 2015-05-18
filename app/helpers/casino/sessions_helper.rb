@@ -89,6 +89,7 @@ module CASino::SessionsHelper
   def handle_signed_in_with_service(tgt, options)
     if service_allowed?(params[:service])
       url = acquire_service_ticket(tgt, params[:service], options).service_with_ticket_url
+      url += "&continue=#{params[:continue]}" if params[:continue]
       redirect_to url, status: :see_other
     else
       @service = params[:service]
