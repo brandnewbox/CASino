@@ -23,6 +23,10 @@ module CASino::SessionsHelper
     tgt.user
   end
 
+  def current_authenticator_context
+    CASino.config.authenticator_context_builder.call(params, request)
+  end
+
   def ensure_signed_in
     redirect_to login_path unless signed_in?
   end
@@ -32,7 +36,8 @@ module CASino::SessionsHelper
   end
 
   def sign_in(authentication_result, options = {})
-    tgt = acquire_ticket_granting_ticket(authentication_result, request.user_agent, options)
+    tgt = acquire_ticket_granting_ticket(authentication_result, request.user_agent, request.remote_ip, options)
+    create_login_attempt(tgt.user, true)
     set_tgt_cookie(tgt)
     handle_signed_in(tgt, options)
   end
@@ -50,7 +55,20 @@ module CASino::SessionsHelper
     cookies.delete :tgt
   end
 
+  def log_failed_login(username)
+    CASino::User.where(username: username).each do |user|
+      create_login_attempt(user, false)
+    end
+  end
+
+  def create_login_attempt(user, successful)
+    user.login_attempts.create! successful: successful,
+                                user_ip: request.ip,
+                                user_agent: request.user_agent
+  end
+
   private
+
   def handle_signed_in(tgt, options = {})
     if tgt.awaiting_two_factor_authentication?
       @ticket_granting_ticket = tgt
@@ -69,12 +87,12 @@ module CASino::SessionsHelper
   end
 
   def handle_signed_in_with_service(tgt, options)
-    if !service_allowed?(params[:service])
-      @service = params[:service]
-      render 'casino/sessions/service_not_allowed', status: 403
-    else
+    if service_allowed?(params[:service])
       url = acquire_service_ticket(tgt, params[:service], options).service_with_ticket_url
       redirect_to url, status: :see_other
+    else
+      @service = params[:service]
+      render 'casino/sessions/service_not_allowed', status: 403
     end
   end
 end

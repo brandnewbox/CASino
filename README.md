@@ -2,11 +2,22 @@
 
 CASino Rails Engine (used in CASinoApp).
 
-It currently supports [CAS 1.0 and CAS 2.0](http://www.jasig.org/cas/protocol) as well as [CAS 3.1 Single Sign Out](https://wiki.jasig.org/display/CASUM/Single+Sign+Out) and [CAS RESTful API](https://wiki.jasig.org/display/CASUM/RESTful+API).
+It currently supports [CAS 1.0 and CAS 2.0](http://apereo.github.io/cas) as well as [CAS 3.1 Single Sign Out](https://wiki.jasig.org/display/CASUM/Single+Sign+Out).
 
 ## Setup
 
 Please check our [documentation](http://casino.rbcas.com/) for setup and configuration instructions.
+
+## Test Suite
+
+Run the RSpec test suite by installing the `appraisal` gem and dependencies:
+
+    $ gem install appraisal
+    $ appraisal install
+
+And then running tests using `appraisal`:
+
+    $ appraisal rake
 
 ## License
 

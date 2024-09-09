@@ -11,17 +11,19 @@ class CASino::SessionsController < CASino::ApplicationController
   def index
     @ticket_granting_tickets = current_user.ticket_granting_tickets.active
     @two_factor_authenticators = current_user.two_factor_authenticators.active
+    @login_attempts = current_user.login_attempts.order(created_at: :desc).first(5)
   end
 
   def new
     tgt = current_ticket_granting_ticket
-    handle_signed_in(tgt) unless params[:renew] || tgt.nil?
-    redirect_to(params[:service]) if params[:gateway] && params[:service].present?
+    return handle_signed_in(tgt) unless params[:renew].present? || tgt.nil?
+    redirect_to(params[:service]) if params[:gateway].present? && params[:service].present?
   end
 
   def create
-    validation_result = validate_login_credentials(params[:username], params[:password])
+    validation_result = validate_login_credentials(params[:username], params[:password], current_authenticator_context)
     if !validation_result
+      log_failed_login params[:username]
       show_login_error I18n.t('login_credential_acceptor.invalid_login_credentials')
     else
       sign_in(validation_result, long_term: params[:rememberMe], credentials_supplied: true)
@@ -39,7 +41,7 @@ class CASino::SessionsController < CASino::ApplicationController
       .ticket_granting_tickets
       .where('id != ?', current_ticket_granting_ticket.id)
       .destroy_all if signed_in?
-    redirect_to params[:service] || sessions_path
+    redirect_to params[:service].present? ? params[:service] : sessions_path
   end
 
   def logout
@@ -59,6 +61,7 @@ class CASino::SessionsController < CASino::ApplicationController
   end
 
   private
+
   def show_login_error(message)
     flash.now[:error] = message
     render :new, status: :forbidden
