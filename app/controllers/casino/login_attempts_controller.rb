@@ -1,5 +1,5 @@
-class CASino::LoginAttemptsController < CASino::ApplicationController
-  include CASino::SessionsHelper
+class Casino::LoginAttemptsController < Casino::ApplicationController
+  include Casino::SessionsHelper
 
   before_action :ensure_signed_in, only: [:index]
 

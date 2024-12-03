@@ -1,11 +1,11 @@
 
-class CASino::ServiceRule < CASino::ApplicationRecord
+class Casino::ServiceRule < Casino::ApplicationRecord
   validates :name, presence: true
   validates :url, uniqueness: true, presence: true
 
   def self.allowed?(service_url)
     rules = self.where(enabled: true)
-    if rules.empty? && !CASino.config.require_service_rules
+    if rules.empty? && !Casino.config.require_service_rules
       true
     else
       rules.any? { |rule| rule.allows?(service_url) }

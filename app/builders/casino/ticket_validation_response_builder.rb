@@ -1,6 +1,6 @@
 require 'builder'
 
-class CASino::TicketValidationResponseBuilder
+class Casino::TicketValidationResponseBuilder
   attr_reader :success, :options
 
   def initialize(success, options)
@@ -13,10 +13,10 @@ class CASino::TicketValidationResponseBuilder
     xml.cas :serviceResponse, 'xmlns:cas' => 'http://www.yale.edu/tp/cas' do |service_response|
       if success
         ticket = options[:ticket]
-        if ticket.is_a?(CASino::ProxyTicket)
+        if ticket.is_a?(Casino::ProxyTicket)
           proxies = []
           service_ticket = ticket
-          while service_ticket.is_a?(CASino::ProxyTicket)
+          while service_ticket.is_a?(Casino::ProxyTicket)
             proxy_granting_ticket = ticket.proxy_granting_ticket
             proxies << proxy_granting_ticket.pgt_url
             service_ticket = proxy_granting_ticket.granter
@@ -73,7 +73,7 @@ class CASino::TicketValidationResponseBuilder
         proxy_granting_ticket = options[:proxy_granting_ticket]
         authentication_success.cas :proxyGrantingTicket, proxy_granting_ticket.iou
       end
-      if ticket.is_a?(CASino::ProxyTicket)
+      if ticket.is_a?(Casino::ProxyTicket)
         authentication_success.cas :proxies do |proxies_container|
           proxies.each do |proxy|
             proxies_container.cas :proxy, proxy

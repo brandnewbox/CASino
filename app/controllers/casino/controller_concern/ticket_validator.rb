@@ -1,7 +1,7 @@
-module CASino::ControllerConcern::TicketValidator
+module Casino::ControllerConcern::TicketValidator
   extend ActiveSupport::Concern
-  include CASino::ServiceTicketProcessor
-  include CASino::ProxyGrantingTicketProcessor
+  include Casino::ServiceTicketProcessor
+  include Casino::ProxyGrantingTicketProcessor
 
   def validate_ticket(ticket)
     validation_result = validate_ticket_for_service(ticket, params[:service], renew: params[:renew])
@@ -17,7 +17,7 @@ module CASino::ControllerConcern::TicketValidator
   end
 
   def build_ticket_validation_response(success, options = {})
-    render xml: CASino::TicketValidationResponseBuilder.new(success, options).build
+    render xml: Casino::TicketValidationResponseBuilder.new(success, options).build
   end
 
   def ensure_service_ticket_parameters_present

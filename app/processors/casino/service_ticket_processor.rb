@@ -1,15 +1,15 @@
 require 'addressable/uri'
 
-module CASino::ServiceTicketProcessor
+module Casino::ServiceTicketProcessor
   extend ActiveSupport::Concern
 
   class ServiceNotAllowedError < StandardError; end
-  class ValidationResult < CASino::ValidationResult; end
+  class ValidationResult < Casino::ValidationResult; end
 
   RESERVED_CAS_PARAMETER_KEYS = ['service', 'ticket', 'gateway', 'renew']
 
   def service_allowed?(service)
-    CASino::ServiceRule.allowed?(service)
+    Casino::ServiceRule.allowed?(service)
   end
 
   def acquire_service_ticket(ticket_granting_ticket, service, options = {})
@@ -67,7 +67,7 @@ module CASino::ServiceTicketProcessor
 
   private
   def validate_existing_ticket_for_service(ticket, service, options = {})
-    service = clean_service_url(service) if ticket.is_a?(CASino::ServiceTicket)
+    service = clean_service_url(service) if ticket.is_a?(Casino::ServiceTicket)
     if ticket.consumed?
       ValidationResult.new 'INVALID_TICKET', "Ticket '#{ticket.ticket}' already consumed", :warn
     elsif ticket.expired?

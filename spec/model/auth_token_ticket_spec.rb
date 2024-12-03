@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CASino::AuthTokenTicket do
+describe Casino::AuthTokenTicket do
   describe '.cleanup' do
     it 'deletes expired auth token tickets' do
       ticket = described_class.new ticket: 'ATT-12345'

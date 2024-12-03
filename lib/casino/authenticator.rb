@@ -1,4 +1,4 @@
-module CASino
+module Casino
   class Authenticator
     class AuthenticatorError < StandardError; end
 

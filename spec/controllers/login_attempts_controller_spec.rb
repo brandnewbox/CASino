@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe CASino::LoginAttemptsController do
-  routes { CASino::Engine.routes }
+describe Casino::LoginAttemptsController do
+  routes { Casino::Engine.routes }
 
   describe 'GET #index' do
     context 'with ticket granting ticket' do

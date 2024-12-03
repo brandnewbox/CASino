@@ -1,5 +1,5 @@
-CASino::Engine.routes.draw do
-  mount CASino::API => '/api'
+Casino::Engine.routes.draw do
+  mount Casino::API => '/api'
 
   resources :sessions, only: [:index, :destroy]
   resources :two_factor_authenticators, only: [:new, :create, :destroy]

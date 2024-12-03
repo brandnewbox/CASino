@@ -1,7 +1,7 @@
 require 'factory_girl'
 
 FactoryBot.define do
-  factory :ticket_granting_ticket, class: CASino::TicketGrantingTicket do
+  factory :ticket_granting_ticket, class: Casino::TicketGrantingTicket do
     user
     sequence :ticket do |n|
       "TGC-ticket#{n}"

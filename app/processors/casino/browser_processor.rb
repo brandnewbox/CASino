@@ -1,4 +1,4 @@
-module CASino::BrowserProcessor
+module Casino::BrowserProcessor
   extend ActiveSupport::Concern
 
   def browser_info(user_agent)

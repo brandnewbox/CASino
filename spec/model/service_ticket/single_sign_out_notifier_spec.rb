@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'nokogiri'
 
-describe CASino::ServiceTicket::SingleSignOutNotifier do
+describe Casino::ServiceTicket::SingleSignOutNotifier do
   let(:service_ticket) { FactoryBot.create :service_ticket }
   let(:service) { service_ticket.service }
   let(:notifier) { described_class.new service_ticket }
@@ -23,7 +23,7 @@ describe CASino::ServiceTicket::SingleSignOutNotifier do
 
     it 'sets the timeout values' do
       %i[read_timeout= open_timeout=].each do |timeout|
-        Net::HTTP.any_instance.should_receive(timeout).with(CASino.config.service_ticket[:single_sign_out_notification][:timeout])
+        Net::HTTP.any_instance.should_receive(timeout).with(Casino.config.service_ticket[:single_sign_out_notification][:timeout])
       end
       notifier.notify
     end

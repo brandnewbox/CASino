@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CASino::ProxyTicket do
+describe Casino::ProxyTicket do
   let(:unconsumed_ticket) do
     ticket = described_class.new ticket: 'PT-12345', service: 'any_string_is_valid'
     ticket.proxy_granting_ticket_id = 1
@@ -21,7 +21,7 @@ describe CASino::ProxyTicket do
 
         context 'with an expired ticket' do
           before(:each) do
-            ticket.created_at = (CASino.config.service_ticket[:"lifetime_#{state}"].seconds + 1).ago
+            ticket.created_at = (Casino.config.service_ticket[:"lifetime_#{state}"].seconds + 1).ago
             ticket.save!
           end
 

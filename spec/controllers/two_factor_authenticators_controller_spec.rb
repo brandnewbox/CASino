@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe CASino::TwoFactorAuthenticatorsController do
-  routes { CASino::Engine.routes }
+describe Casino::TwoFactorAuthenticatorsController do
+  routes { Casino::Engine.routes }
 
   let(:params) { Hash.new }
   let(:request_options) { {params: params} }
@@ -19,17 +19,17 @@ describe CASino::TwoFactorAuthenticatorsController do
       it 'creates exactly one authenticator' do
         lambda do
           get :new, **request_options
-        end.should change(CASino::TwoFactorAuthenticator, :count).by(1)
+        end.should change(Casino::TwoFactorAuthenticator, :count).by(1)
       end
 
       it 'assigns the two_factor_authenticator' do
         get :new, **request_options
-        assigns(:two_factor_authenticator).should be_kind_of(CASino::TwoFactorAuthenticator)
+        assigns(:two_factor_authenticator).should be_kind_of(Casino::TwoFactorAuthenticator)
       end
 
       it 'creates an inactive two-factor authenticator' do
         get :new, **request_options
-        CASino::TwoFactorAuthenticator.last.should_not be_active
+        Casino::TwoFactorAuthenticator.last.should_not be_active
       end
 
       it 'renders the new template' do
@@ -39,7 +39,7 @@ describe CASino::TwoFactorAuthenticatorsController do
 
       context 'with a really long service name' do
         before(:each) do
-          CASino.config.frontend[:sso_name] = 'Na' * 200
+          Casino.config.frontend[:sso_name] = 'Na' * 200
         end
 
         render_views
@@ -164,7 +164,7 @@ describe CASino::TwoFactorAuthenticatorsController do
 
           it 'assigns the two-factor authenticator' do
             post :create, **request_options
-            assigns(:two_factor_authenticator).should be_kind_of(CASino::TwoFactorAuthenticator)
+            assigns(:two_factor_authenticator).should be_kind_of(Casino::TwoFactorAuthenticator)
           end
 
           it 'does not activate the authenticator' do
@@ -217,7 +217,7 @@ describe CASino::TwoFactorAuthenticatorsController do
         it 'does not delete other two-factor authenticators' do
           lambda do
             delete :destroy, **request_options
-          end.should change(CASino::TwoFactorAuthenticator, :count).by(-1)
+          end.should change(Casino::TwoFactorAuthenticator, :count).by(-1)
         end
       end
 
@@ -232,7 +232,7 @@ describe CASino::TwoFactorAuthenticatorsController do
         it 'does not delete two-factor authenticators' do
           lambda do
             delete :destroy, **request_options
-          end.should_not change(CASino::TwoFactorAuthenticator, :count)
+          end.should_not change(Casino::TwoFactorAuthenticator, :count)
         end
       end
     end

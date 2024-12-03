@@ -1,7 +1,7 @@
 require 'factory_girl'
 
 FactoryBot.define do
-  factory :service_rule, class: CASino::ServiceRule do
+  factory :service_rule, class: Casino::ServiceRule do
     sequence :order do |n|
       n
     end

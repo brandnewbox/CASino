@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CASino::ServiceTicket do
+describe Casino::ServiceTicket do
   let(:unconsumed_ticket) do
     ticket = described_class.new ticket: 'ST-12345', service: 'https://example.com/cas-service'
     ticket.ticket_granting_ticket_id = 1
@@ -21,7 +21,7 @@ describe CASino::ServiceTicket do
 
         context 'with an expired ticket' do
           before(:each) do
-            ticket.created_at = (CASino.config.service_ticket[:"lifetime_#{state}"].seconds + 1).ago
+            ticket.created_at = (Casino.config.service_ticket[:"lifetime_#{state}"].seconds + 1).ago
             ticket.save!
           end
 
@@ -110,7 +110,7 @@ describe CASino::ServiceTicket do
         consumed_ticket
         lambda {
           consumed_ticket.destroy
-        }.should change(CASino::ServiceTicket, :count).by(-1)
+        }.should change(Casino::ServiceTicket, :count).by(-1)
       end
     end
   end

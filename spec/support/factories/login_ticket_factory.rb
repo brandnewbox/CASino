@@ -1,7 +1,7 @@
 require 'factory_girl'
 
 FactoryBot.define do
-  factory :login_ticket, class: CASino::LoginTicket do
+  factory :login_ticket, class: Casino::LoginTicket do
     sequence :ticket do |n|
       "LT-ticket#{n}"
     end

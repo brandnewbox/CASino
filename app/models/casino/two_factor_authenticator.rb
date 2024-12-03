@@ -1,5 +1,5 @@
 
-class CASino::TwoFactorAuthenticator < CASino::ApplicationRecord
+class Casino::TwoFactorAuthenticator < Casino::ApplicationRecord
   belongs_to :user
 
   scope :active, -> { where(active: true) }
@@ -9,7 +9,7 @@ class CASino::TwoFactorAuthenticator < CASino::ApplicationRecord
   end
 
   def self.lifetime
-    CASino.config.two_factor_authenticator[:lifetime_inactive].seconds
+    Casino.config.two_factor_authenticator[:lifetime_inactive].seconds
   end
 
   def expired?

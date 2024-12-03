@@ -1,4 +1,4 @@
-module CASino::ModelConcern::BrowserInfo
+module Casino::ModelConcern::BrowserInfo
   extend ActiveSupport::Concern
 
   def browser_info

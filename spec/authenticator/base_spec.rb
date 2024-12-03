@@ -2,9 +2,9 @@ require 'spec_helper'
 
 require 'casino/authenticator'
 
-describe CASino::Authenticator do
+describe Casino::Authenticator do
   subject {
-    CASino::Authenticator.new
+    Casino::Authenticator.new
   }
 
   context '#validate' do

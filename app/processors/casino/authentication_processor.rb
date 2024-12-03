@@ -1,6 +1,6 @@
 require 'casino/authenticator'
 
-module CASino::AuthenticationProcessor
+module Casino::AuthenticationProcessor
   extend ActiveSupport::Concern
 
   def validate_login_credentials(username, password, context = nil)
@@ -14,7 +14,7 @@ module CASino::AuthenticationProcessor
         credentials.pop if authenticator.class.instance_method(:validate).arity == 2
 
         data = authenticator.validate(*credentials)
-      rescue CASino::Authenticator::AuthenticatorError => e
+      rescue Casino::Authenticator::AuthenticatorError => e
         Rails.logger.error "Authenticator '#{authenticator_name}' (#{authenticator.class}) raised an error: #{e}"
       end
       if data
@@ -35,7 +35,7 @@ module CASino::AuthenticationProcessor
 
   def authenticators
     @authenticators ||= {}.tap do |authenticators|
-      CASino.config[:authenticators].each do |name, auth|
+      Casino.config[:authenticators].each do |name, auth|
         next unless auth.is_a?(Hash)
 
         authenticator = if auth[:class]
@@ -54,8 +54,8 @@ module CASino::AuthenticationProcessor
     gemname, classname = parse_name(name)
 
     begin
-      require gemname unless CASino.const_defined?(classname)
-      CASino.const_get(classname)
+      require gemname unless Casino.const_defined?(classname)
+      Casino.const_get(classname)
     rescue LoadError => error
       raise LoadError, load_error_message(name, gemname, error)
     rescue NameError => error
@@ -75,7 +75,7 @@ module CASino::AuthenticationProcessor
 
   def name_error_message(name, error)
     "Failed to load authenticator '#{name}'. The authenticator class must " \
-      "be defined in the CASino namespace.\n" \
+      "be defined in the Casino namespace.\n" \
       "  Error: #{error.message}\n"
   end
 end

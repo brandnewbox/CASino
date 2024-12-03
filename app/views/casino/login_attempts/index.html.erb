@@ -1,7 +1,7 @@
 <div class="container">
   <div class="login_attempts_index box">
     <div class="info">
-      <h1><%= CASino::LoginAttempt.model_name.human(count: 2) %></h1>
+      <h1><%= Casino::LoginAttempt.model_name.human(count: 2) %></h1>
       <%= link_to t('shared.back'), sessions_path, :class => 'button' %>
     </div>
 

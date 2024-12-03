@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe 'Session overview' do
-  include CASino::Engine.routes.url_helpers
+  include Casino::Engine.routes.url_helpers
 
   subject { page }
 
   context 'when logged in' do
     let(:login_attempt) do
       FactoryBot.create :login_attempt, created_at: Time.zone.parse('2015-01-01 09:10'),
-                                         user: CASino::User.first
+                                         user: Casino::User.first
     end
 
     before do
