@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'TwoFactorAuthenticator' do
-  include CASino::Engine.routes.url_helpers
+  include Casino::Engine.routes.url_helpers
 
   subject { page }
 
@@ -23,7 +23,7 @@ describe 'TwoFactorAuthenticator' do
         it { should have_text 'authenticator was successfully deleted' }
 
         it 'deletes the two-factor authenticator' do
-          CASino::TwoFactorAuthenticator.count.should == 0
+          Casino::TwoFactorAuthenticator.count.should == 0
         end
       end
     end

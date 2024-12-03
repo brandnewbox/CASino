@@ -8,11 +8,11 @@ defaults: &defaults
     lifetime_unconsumed: 300
     lifetime_consumed: 86400
   frontend:
-    sso_name: "CASino"
-    footer_text: "Powered by <a href=\"http://rbcas.com/\">CASino</a>"
+    sso_name: "Casino"
+    footer_text: "Powered by <a href=\"http://rbcas.com/\">Casino</a>"
   authenticators:
     static:
-      class: "CASino::StaticAuthenticator"
+      class: "Casino::StaticAuthenticator"
       options:
         users:
           testuser:

@@ -1,8 +1,8 @@
 require 'user_agent'
 
-class CASino::TicketGrantingTicket < CASino::ApplicationRecord
-  include CASino::ModelConcern::Ticket
-  include CASino::ModelConcern::BrowserInfo
+class Casino::TicketGrantingTicket < Casino::ApplicationRecord
+  include Casino::ModelConcern::Ticket
+  include Casino::ModelConcern::BrowserInfo
 
   self.ticket_prefix = 'TGC'.freeze
 
@@ -19,13 +19,13 @@ class CASino::TicketGrantingTicket < CASino::ApplicationRecord
     end
     tgts = base.where([
       '(created_at < ? AND awaiting_two_factor_authentication = ?) OR (created_at < ? AND long_term = ?) OR created_at < ?',
-      CASino.config.two_factor_authenticator[:timeout].seconds.ago,
+      Casino.config.two_factor_authenticator[:timeout].seconds.ago,
       true,
-      CASino.config.ticket_granting_ticket[:lifetime].seconds.ago,
+      Casino.config.ticket_granting_ticket[:lifetime].seconds.ago,
       false,
-      CASino.config.ticket_granting_ticket[:lifetime_long_term].seconds.ago
+      Casino.config.ticket_granting_ticket[:lifetime_long_term].seconds.ago
     ])
-    CASino::ServiceTicket.where(ticket_granting_ticket_id: tgts).destroy_all
+    Casino::ServiceTicket.where(ticket_granting_ticket_id: tgts).destroy_all
     tgts.destroy_all
   end
 
@@ -39,11 +39,11 @@ class CASino::TicketGrantingTicket < CASino::ApplicationRecord
 
   def expired?
     if awaiting_two_factor_authentication?
-      lifetime = CASino.config.two_factor_authenticator[:timeout]
+      lifetime = Casino.config.two_factor_authenticator[:timeout]
     elsif long_term?
-      lifetime = CASino.config.ticket_granting_ticket[:lifetime_long_term]
+      lifetime = Casino.config.ticket_granting_ticket[:lifetime_long_term]
     else
-      lifetime = CASino.config.ticket_granting_ticket[:lifetime]
+      lifetime = Casino.config.ticket_granting_ticket[:lifetime]
     end
     (Time.now - (self.created_at || Time.now)) > lifetime
   end

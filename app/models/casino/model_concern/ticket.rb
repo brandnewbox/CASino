@@ -1,4 +1,4 @@
-module CASino::ModelConcern::Ticket
+module Casino::ModelConcern::Ticket
   extend ActiveSupport::Concern
 
   included do

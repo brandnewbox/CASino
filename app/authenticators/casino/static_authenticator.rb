@@ -2,7 +2,7 @@ require 'casino/authenticator'
 
 # The static authenticator is just a simple example.
 # Never use this authenticator in a productive environment!
-class CASino::StaticAuthenticator < CASino::Authenticator
+class Casino::StaticAuthenticator < Casino::Authenticator
 
   # @param [Hash] options
   def initialize(options)

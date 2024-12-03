@@ -1,5 +1,5 @@
-class CASino::AuthTokensController < CASino::ApplicationController
-  include CASino::SessionsHelper
+class Casino::AuthTokensController < Casino::ApplicationController
+  include Casino::SessionsHelper
 
   def login
     validation_result = validation_service.validation_result
@@ -9,7 +9,7 @@ class CASino::AuthTokensController < CASino::ApplicationController
 
   private
   def validation_service
-    @validation_service ||= CASino::AuthTokenValidationService.new(auth_token, auth_token_signature)
+    @validation_service ||= Casino::AuthTokenValidationService.new(auth_token, auth_token_signature)
   end
 
   def redirect_to_login

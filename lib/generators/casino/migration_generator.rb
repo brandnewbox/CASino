@@ -1,13 +1,13 @@
 require 'rails/generators/active_record'
 
-module CASino
+module Casino
   class MigrationGenerator < ::Rails::Generators::Base
     include Rails::Generators::Migration
     source_root File.expand_path('../../../../db/migrate', __FILE__)
 
     namespace 'casino:migration'
 
-    desc 'Installs CASino migration files.'
+    desc 'Installs Casino migration files.'
     
     def install
       source_paths.each do |source_path|

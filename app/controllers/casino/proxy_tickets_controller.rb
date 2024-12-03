@@ -1,5 +1,5 @@
-class CASino::ProxyTicketsController < CASino::ApplicationController
-  include CASino::ControllerConcern::TicketValidator
+class Casino::ProxyTicketsController < Casino::ApplicationController
+  include Casino::ControllerConcern::TicketValidator
 
   before_action :load_ticket, only: [:proxy_validate]
   before_action :ensure_service_ticket_parameters_present, only: [:proxy_validate]
@@ -20,14 +20,14 @@ class CASino::ProxyTicketsController < CASino::ApplicationController
   def load_ticket
     @ticket = case params[:ticket]
               when /\APT-/
-                CASino::ProxyTicket.where(ticket: params[:ticket]).first
+                Casino::ProxyTicket.where(ticket: params[:ticket]).first
               when /\AST-/
-                CASino::ServiceTicket.where(ticket: params[:ticket]).first
+                Casino::ServiceTicket.where(ticket: params[:ticket]).first
               end
   end
 
   def build_proxy_response(success, options = {})
-    render xml: CASino::ProxyResponseBuilder.new(success, options).build
+    render xml: Casino::ProxyResponseBuilder.new(success, options).build
   end
 
   def ensure_proxy_parameters_present
@@ -39,7 +39,7 @@ class CASino::ProxyTicketsController < CASino::ApplicationController
   end
 
   def load_proxy_granting_ticket
-    @proxy_granting_ticket = CASino::ProxyGrantingTicket.where(ticket: params[:pgt]).first if params[:pgt].present?
+    @proxy_granting_ticket = Casino::ProxyGrantingTicket.where(ticket: params[:pgt]).first if params[:pgt].present?
     if @proxy_granting_ticket.nil?
       build_proxy_response(false,
                            error_code: 'BAD_PGT',

@@ -1,6 +1,6 @@
 require 'builder'
 
-class CASino::ProxyResponseBuilder
+class Casino::ProxyResponseBuilder
   attr_reader :success, :options
 
   def initialize(success, options)

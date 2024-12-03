@@ -4,7 +4,7 @@ namespace :casino do
   namespace :authentication do
     desc 'Test authentication.'
     task test: :environment do |task, args|
-      include CASino::AuthenticationProcessor
+      include Casino::AuthenticationProcessor
       print "Username: "
       username = STDIN.gets.chomp
       print "Password (won't be shown): "
@@ -20,7 +20,7 @@ namespace :casino do
           else
             puts "Invalid credentials"
           end
-        rescue CASino::Authenticator::AuthenticatorError => e
+        rescue Casino::Authenticator::AuthenticatorError => e
           puts "#{e}"
         end
       end

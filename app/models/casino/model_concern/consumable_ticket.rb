@@ -1,4 +1,4 @@
-module CASino::ModelConcern::ConsumableTicket
+module Casino::ModelConcern::ConsumableTicket
   extend ActiveSupport::Concern
 
   module ClassMethods

@@ -1,6 +1,6 @@
 ===============================================================================
 
-The CASino Engine has been correctly installed in your Rails application.
+The Casino Engine has been correctly installed in your Rails application.
 
   1. Edit the configuration file:
 
@@ -10,7 +10,7 @@ The CASino Engine has been correctly installed in your Rails application.
 
     - app/views/layouts/application.html.erb
 
-  3. Run the generated CASino migrations
+  3. Run the generated Casino migrations
 
     > bundle exec rake db:migrate SCOPE=casino
 

@@ -1,5 +1,5 @@
-describe CASino::ServiceTicketsController do
-  routes { CASino::Engine.routes }
+describe Casino::ServiceTicketsController do
+  routes { Casino::Engine.routes }
 
   describe 'GET "validate"' do
     let(:request_options) { {params: params} }

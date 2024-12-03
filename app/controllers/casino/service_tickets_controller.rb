@@ -1,5 +1,5 @@
-class CASino::ServiceTicketsController < CASino::ApplicationController
-  include CASino::ControllerConcern::TicketValidator
+class Casino::ServiceTicketsController < Casino::ApplicationController
+  include Casino::ControllerConcern::TicketValidator
 
   before_action :load_service_ticket
   before_action :ensure_service_ticket_parameters_present, only: [:service_validate]
@@ -17,6 +17,6 @@ class CASino::ServiceTicketsController < CASino::ApplicationController
 
   private
   def load_service_ticket
-    @service_ticket = CASino::ServiceTicket.where(ticket: params[:ticket]).first if params[:service].present?
+    @service_ticket = Casino::ServiceTicket.where(ticket: params[:ticket]).first if params[:service].present?
   end
 end

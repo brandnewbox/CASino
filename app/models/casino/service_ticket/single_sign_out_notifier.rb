@@ -1,7 +1,7 @@
 require 'builder'
 require 'faraday'
 
-class CASino::ServiceTicket::SingleSignOutNotifier
+class Casino::ServiceTicket::SingleSignOutNotifier
   def initialize(service_ticket)
     @service_ticket = service_ticket
   end
@@ -28,7 +28,7 @@ class CASino::ServiceTicket::SingleSignOutNotifier
   def send_notification(url, xml)
     Rails.logger.info "Sending Single Sign Out notification for ticket '#{@service_ticket.ticket}'"
     result = Faraday.post(url, logoutRequest: xml) do |request|
-      request.options[:timeout] = CASino.config.service_ticket[:single_sign_out_notification][:timeout]
+      request.options[:timeout] = Casino.config.service_ticket[:single_sign_out_notification][:timeout]
     end
     if result.success?
       Rails.logger.info "Logout notification successfully posted to #{url}."

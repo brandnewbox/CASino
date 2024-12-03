@@ -1,6 +1,6 @@
 require 'faraday'
 
-module CASino::ProxyGrantingTicketProcessor
+module Casino::ProxyGrantingTicketProcessor
   extend ActiveSupport::Concern
 
   def acquire_proxy_granting_ticket(pgt_url, service_ticket)

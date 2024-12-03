@@ -1,7 +1,7 @@
 require 'factory_girl'
 
 FactoryBot.define do
-  factory :proxy_ticket, class: CASino::ProxyTicket do
+  factory :proxy_ticket, class: Casino::ProxyTicket do
     proxy_granting_ticket
     sequence :ticket do |n|
       "PT-ticket#{n}"

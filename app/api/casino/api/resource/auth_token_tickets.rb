@@ -1,12 +1,12 @@
 require 'grape'
 
-class CASino::API::Resource::AuthTokenTickets < Grape::API
+class Casino::Api::Resource::AuthTokenTickets < Grape::API
   resource :auth_token_tickets do
     desc 'Create an auth token ticket'
     post do
-      @ticket = CASino::AuthTokenTicket.create
+      @ticket = Casino::AuthTokenTicket.create
       Rails.logger.debug "Created auth token ticket '#{@ticket.ticket}'"
-      present @ticket, with: CASino::API::Entity::AuthTokenTicket
+      present @ticket, with: Casino::Api::Entity::AuthTokenTicket
     end
   end
 end

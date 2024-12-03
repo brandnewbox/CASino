@@ -1,5 +1,5 @@
-class CASino::AuthTokenValidationService
-  include CASino::AuthenticationProcessor
+class Casino::AuthTokenValidationService
+  include Casino::AuthenticationProcessor
 
   AUTH_TOKEN_SIGNERS_GLOB = Rails.root.join('config/auth_token_signers/*.pem').freeze
 
@@ -55,12 +55,12 @@ class CASino::AuthTokenValidationService
   end
 
   def ticket_valid?
-    CASino::AuthTokenTicket.consume(token_data[:ticket]).tap do |is_valid|
+    Casino::AuthTokenTicket.consume(token_data[:ticket]).tap do |is_valid|
       Rails.logger.warn('Could not find a valid auth token ticket.') unless is_valid
     end
   end
 
   def authentication_service
-    @authentication_service ||= CASino::AuthenticationService.new
+    @authentication_service ||= Casino::AuthenticationService.new
   end
 end

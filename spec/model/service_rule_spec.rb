@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CASino::ServiceRule do
+describe Casino::ServiceRule do
   describe '.allowed?' do
     context 'with an empty table' do
       context 'with default settings' do
@@ -13,7 +13,7 @@ describe CASino::ServiceRule do
 
       context 'with require_service_rules option' do
         before(:each) do
-          CASino.config.require_service_rules = true
+          Casino.config.require_service_rules = true
         end
 
         ['https://www.example.org/', 'http://www.google.com/'].each do |service_url|

@@ -1,13 +1,13 @@
-CASino installation generator
+Casino installation generator
 
 Description:
-    The 'casino:install' command installs the CASino Rails Engine into your
+    The 'casino:install' command installs the Casino Rails Engine into your
     Rails application.
 
 Example:
     rails g casino:install
 
     This generates a few files inside your application that are required for
-    CASino to work properly.
+    Casino to work properly.
 
     See http://casino.rbcas.com for more information.
