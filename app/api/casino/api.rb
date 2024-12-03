@@ -1,7 +1,7 @@
 require 'grape'
 
-class Casino::API < Grape::API
+class Casino::Api < Grape::API
   format :json
 
-  mount Casino::API::Resource::AuthTokenTickets
+  mount Casino::Api::Resource::AuthTokenTickets
 end
