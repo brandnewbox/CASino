@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 shared_examples_for 'a service ticket validator' do
-  routes { CASino::Engine.routes }
+  routes { Casino::Engine.routes }
 
   let(:request_options) { {params: params} }
   let(:service_ticket) { FactoryBot.create :service_ticket }
@@ -31,7 +31,7 @@ shared_examples_for 'a service ticket validator' do
     context 'with an unconsumed service ticket' do
       context 'with extra attributes using strings as keys' do
         before(:each) do
-          CASino::User.any_instance.stub(:extra_attributes).and_return({ "id" => 1234 })
+          Casino::User.any_instance.stub(:extra_attributes).and_return({ "id" => 1234 })
         end
 
         it 'includes the extra attributes' do
@@ -42,7 +42,7 @@ shared_examples_for 'a service ticket validator' do
 
       context 'with extra attributes using array as value' do
         before(:each) do
-          CASino::User.any_instance.stub(:extra_attributes).and_return({ "memberOf" => [ "test", "yolo" ] })
+          Casino::User.any_instance.stub(:extra_attributes).and_return({ "memberOf" => [ "test", "yolo" ] })
         end
 
         it 'includes all values' do
@@ -158,7 +158,7 @@ shared_examples_for 'a service ticket validator' do
 
         it 'contacts the callback server' do
           get validation_action, **request_options
-          proxy_granting_ticket = CASino::ProxyGrantingTicket.last
+          proxy_granting_ticket = Casino::ProxyGrantingTicket.last
           WebMock.should have_requested(:get, 'https://www.example.org').with(query: {
             pgtId: proxy_granting_ticket.ticket,
             pgtIou: proxy_granting_ticket.iou
@@ -214,12 +214,12 @@ shared_examples_for 'a service ticket validator' do
   end
 end
 
-describe CASino::ServiceTicketsController do
+describe Casino::ServiceTicketsController do
   let(:validation_action) { :service_validate }
   it_behaves_like 'a service ticket validator'
 end
 
-describe CASino::ProxyTicketsController do
+describe Casino::ProxyTicketsController do
   let(:validation_action) { :proxy_validate }
   it_behaves_like 'a service ticket validator'
 end

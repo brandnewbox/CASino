@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe CASino::ProxyTicketsController do
-  routes { CASino::Engine.routes }
+describe Casino::ProxyTicketsController do
+  routes { Casino::Engine.routes }
 
   let(:request_options) { {params: params} }
 
@@ -30,7 +30,7 @@ describe CASino::ProxyTicketsController do
 
       context 'with an expired proxy ticket' do
         before(:each) do
-          CASino::ProxyTicket.any_instance.stub(:expired?).and_return(true)
+          Casino::ProxyTicket.any_instance.stub(:expired?).and_return(true)
         end
 
         it 'answers with the failure text' do
@@ -74,7 +74,7 @@ describe CASino::ProxyTicketsController do
       it 'does not create a proxy ticket' do
         lambda do
           get :create, **request_options
-        end.should_not change(CASino::ProxyTicket, :count)
+        end.should_not change(Casino::ProxyTicket, :count)
       end
     end
 
@@ -89,7 +89,7 @@ describe CASino::ProxyTicketsController do
       it 'does not create a proxy ticket' do
         lambda do
           get :create, **request_options
-        end.should_not change(CASino::ProxyTicket, :count)
+        end.should_not change(Casino::ProxyTicket, :count)
       end
     end
 
@@ -110,7 +110,7 @@ describe CASino::ProxyTicketsController do
 
       it 'includes the proxy ticket in the response' do
         get :create, **request_options
-        proxy_ticket = CASino::ProxyTicket.last
+        proxy_ticket = Casino::ProxyTicket.last
         response.body.should =~ /<cas:proxyTicket>#{proxy_ticket.ticket}<\/cas:proxyTicket>/
       end
 
@@ -125,7 +125,7 @@ describe CASino::ProxyTicketsController do
         it 'does not create a proxy ticket' do
           lambda do
             get :create, **request_options
-          end.should_not change(CASino::ProxyTicket, :count)
+          end.should_not change(Casino::ProxyTicket, :count)
         end
       end
     end

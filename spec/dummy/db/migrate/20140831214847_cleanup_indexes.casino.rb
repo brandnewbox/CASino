@@ -1,7 +1,7 @@
 # This migration comes from casino (originally 20131022110146)
 class CleanupIndexes < ActiveRecord::Migration
   def change
-    # delete some leftovers in migrated CASino 1.x installations
+    # delete some leftovers in migrated Casino 1.x installations
     remove_deprecated_index_if_exists :login_tickets, [:ticket]
     remove_deprecated_index_if_exists :proxy_granting_tickets, [:granter_type, :granter_id]
     remove_deprecated_index_if_exists :proxy_granting_tickets, [:iou]

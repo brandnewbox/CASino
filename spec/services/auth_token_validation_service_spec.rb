@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CASino::AuthTokenValidationService do
+describe Casino::AuthTokenValidationService do
   let(:token) { 'le_token' }
   let(:signature) { 'le_signature' }
 
@@ -8,7 +8,7 @@ describe CASino::AuthTokenValidationService do
 
   context 'without any token signers' do
     before(:each) do
-      Dir.stub(:glob).with(CASino::AuthTokenValidationService::AUTH_TOKEN_SIGNERS_GLOB).and_return(nil)
+      Dir.stub(:glob).with(Casino::AuthTokenValidationService::AUTH_TOKEN_SIGNERS_GLOB).and_return(nil)
     end
 
     its(:user_data) { should == nil }
@@ -26,7 +26,7 @@ describe CASino::AuthTokenValidationService do
     end
 
     before(:each) do
-      Dir.stub(:glob).with(CASino::AuthTokenValidationService::AUTH_TOKEN_SIGNERS_GLOB) do |&block|
+      Dir.stub(:glob).with(Casino::AuthTokenValidationService::AUTH_TOKEN_SIGNERS_GLOB) do |&block|
         block.call(signer_path)
       end
       File.stub(:read).with(signer_path).and_return(signer_path_content)
@@ -45,7 +45,7 @@ describe CASino::AuthTokenValidationService do
       let(:signature_valid) { true }
 
       before(:each) do
-        CASino::AuthTokenTicket.stub(:consume).and_return(ticket_valid)
+        Casino::AuthTokenTicket.stub(:consume).and_return(ticket_valid)
       end
 
       context 'with an invalid ticket' do

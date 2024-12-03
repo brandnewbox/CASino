@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe CASino::AuthTokensController do
-  routes { CASino::Engine.routes }
+describe Casino::AuthTokensController do
+  routes { Casino::Engine.routes }
 
   let(:params) { {} }
   let(:request_options) { {params: params} }
 
   before(:each) do
-    CASino::AuthTokenValidationService.any_instance.stub(:validation_result).and_return(validation_result)
+    Casino::AuthTokenValidationService.any_instance.stub(:validation_result).and_return(validation_result)
   end
 
   describe 'GET "authTokenLogin"' do
@@ -51,7 +51,7 @@ describe CASino::AuthTokensController do
         it 'generates a service ticket' do
           lambda do
             get :login, **request_options
-          end.should change(CASino::ServiceTicket, :count).by(1)
+          end.should change(Casino::ServiceTicket, :count).by(1)
         end
       end
 
@@ -63,7 +63,7 @@ describe CASino::AuthTokensController do
       it 'generates a ticket-granting ticket' do
         lambda do
           get :login, **request_options
-        end.should change(CASino::TicketGrantingTicket, :count).by(1)
+        end.should change(Casino::TicketGrantingTicket, :count).by(1)
       end
 
       it 'redirects to the session overview' do

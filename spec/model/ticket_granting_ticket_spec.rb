@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'useragent'
 
-describe CASino::TicketGrantingTicket do
+describe Casino::TicketGrantingTicket do
   let(:ticket_granting_ticket) { FactoryBot.create :ticket_granting_ticket, user_agent: 'TestBrowser' }
   let(:service_ticket) { FactoryBot.create :service_ticket, ticket_granting_ticket: ticket_granting_ticket }
 
@@ -14,20 +14,20 @@ describe CASino::TicketGrantingTicket do
 
     context 'when notification for a service ticket fails' do
       before(:each) do
-        CASino::ServiceTicket::SingleSignOutNotifier.any_instance.stub(:notify).and_return(false)
+        Casino::ServiceTicket::SingleSignOutNotifier.any_instance.stub(:notify).and_return(false)
       end
 
       it 'deletes depending proxy-granting tickets' do
         consumed_service_ticket.proxy_granting_tickets.create! ticket: 'PGT-12345', iou: 'PGTIOU-12345', pgt_url: 'bla'
         lambda {
           ticket_granting_ticket.destroy
-        }.should change(CASino::ProxyGrantingTicket, :count).by(-1)
+        }.should change(Casino::ProxyGrantingTicket, :count).by(-1)
       end
 
       it 'deletes depending service tickets' do
         lambda {
           ticket_granting_ticket.destroy
-        }.should change(CASino::ServiceTicket, :count).by(-1)
+        }.should change(Casino::ServiceTicket, :count).by(-1)
       end
     end
   end

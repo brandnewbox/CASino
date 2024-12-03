@@ -1,10 +1,12 @@
-module CASino::TicketGrantingTicketProcessor
+require_dependency 'casino/browser_processor'
+
+module Casino::TicketGrantingTicketProcessor
   extend ActiveSupport::Concern
 
-  include CASino::BrowserProcessor
+  include Casino::BrowserProcessor
 
   def find_valid_ticket_granting_ticket(ticket, user_agent, options = {})
-    tgt = CASino::TicketGrantingTicket.where(ticket: ticket).first
+    tgt = Casino::TicketGrantingTicket.where(ticket: ticket).first
     unless tgt.nil?
       if tgt.expired?
         Rails.logger.info "Ticket-granting ticket expired (Created: #{tgt.created_at})"
@@ -38,7 +40,7 @@ module CASino::TicketGrantingTicketProcessor
   end
 
   def load_or_initialize_user(authenticator, username, extra_attributes)
-    user = CASino::User
+    user = Casino::User
       .where(authenticator: authenticator, username: username)
       .first_or_initialize
     user.extra_attributes = extra_attributes
@@ -52,6 +54,6 @@ module CASino::TicketGrantingTicketProcessor
   end
 
   def cleanup_expired_ticket_granting_tickets(user)
-    CASino::TicketGrantingTicket.cleanup(user)
+    Casino::TicketGrantingTicket.cleanup(user)
   end
 end

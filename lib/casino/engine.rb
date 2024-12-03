@@ -2,9 +2,9 @@ require 'casino'
 require 'casino/inflections'
 require 'yaml'
 
-module CASino
+module Casino
   class Engine < Rails::Engine
-    isolate_namespace CASino
+    isolate_namespace Casino
 
     rake_tasks { require 'casino/tasks' }
 
@@ -17,11 +17,11 @@ module CASino
       cfg = (YAML.load(ERB.new(yaml).result)||{}).fetch(Rails.env, {})
       cfg.each do |k,v|
         value = if v.is_a? Hash
-          CASino.config.fetch(k.to_sym,{}).merge(v.symbolize_keys)
+          Casino.config.fetch(k.to_sym,{}).merge(v.symbolize_keys)
         else
           v
         end
-        CASino.config.send("#{k}=", value)
+        Casino.config.send("#{k}=", value)
       end
     end
 

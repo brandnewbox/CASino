@@ -1,7 +1,7 @@
-class CASino::SessionsController < CASino::ApplicationController
-  include CASino::SessionsHelper
-  include CASino::AuthenticationProcessor
-  include CASino::TwoFactorAuthenticatorProcessor
+class Casino::SessionsController < Casino::ApplicationController
+  include Casino::SessionsHelper
+  include Casino::AuthenticationProcessor
+  include Casino::TwoFactorAuthenticatorProcessor
 
   before_action :validate_login_ticket, only: [:create]
   before_action :ensure_service_allowed, only: [:new, :create]
@@ -68,7 +68,7 @@ class CASino::SessionsController < CASino::ApplicationController
   end
 
   def validate_login_ticket
-    unless CASino::LoginTicket.consume(params[:lt])
+    unless Casino::LoginTicket.consume(params[:lt])
       show_login_error I18n.t('login_credential_acceptor.invalid_login_ticket')
     end
   end

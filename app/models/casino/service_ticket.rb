@@ -1,24 +1,24 @@
 require 'addressable/uri'
 
-class CASino::ServiceTicket < CASino::ApplicationRecord
-  include CASino::ModelConcern::Ticket
+class Casino::ServiceTicket < Casino::ApplicationRecord
+  include Casino::ModelConcern::Ticket
 
   self.ticket_prefix = 'ST'.freeze
 
-  belongs_to :ticket_granting_ticket
+  belongs_to :ticket_granting_ticket, optional: true
   before_destroy :send_single_sign_out_notification, if: :consumed?
   has_many :proxy_granting_tickets, as: :granter, dependent: :destroy
 
   def self.cleanup_unconsumed
-    where(['created_at < ? AND consumed = ?', CASino.config.service_ticket[:lifetime_unconsumed].seconds.ago, false]).delete_all
+    self.where('created_at < ? AND consumed = ?', Casino.config.service_ticket[:lifetime_unconsumed].seconds.ago, false).delete_all
   end
 
   def self.cleanup_consumed
-    where(['(ticket_granting_ticket_id IS NULL OR created_at < ?) AND consumed = ?', CASino.config.service_ticket[:lifetime_consumed].seconds.ago, true]).destroy_all
+    self.where('(ticket_granting_ticket_id IS NULL OR created_at < ?) AND consumed = ?', Casino.config.service_ticket[:lifetime_consumed].seconds.ago, true).destroy_all
   end
 
   def self.cleanup_consumed_hard
-    where(['created_at < ? AND consumed = ?', (CASino.config.service_ticket[:lifetime_consumed] * 2).seconds.ago, true]).delete_all
+    self.where('created_at < ? AND consumed = ?', (Casino.config.service_ticket[:lifetime_consumed] * 2).seconds.ago, true).delete_all
   end
 
   def service=(service)
@@ -34,9 +34,9 @@ class CASino::ServiceTicket < CASino::ApplicationRecord
 
   def expired?
     lifetime = if consumed?
-                 CASino.config.service_ticket[:lifetime_consumed]
+                 Casino.config.service_ticket[:lifetime_consumed]
                else
-                 CASino.config.service_ticket[:lifetime_unconsumed]
+                 Casino.config.service_ticket[:lifetime_unconsumed]
                end
     (Time.now - (created_at || Time.now)) > lifetime
   end

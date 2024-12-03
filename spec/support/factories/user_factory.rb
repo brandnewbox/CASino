@@ -1,7 +1,7 @@
 require 'factory_girl'
 
 FactoryBot.define do
-  factory :user, class: CASino::User do
+  factory :user, class: Casino::User do
     authenticator 'test'
     sequence(:username) do |n|
       "test#{n}"

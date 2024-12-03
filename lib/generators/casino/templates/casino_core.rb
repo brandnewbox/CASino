@@ -1,1 +1,1 @@
-CASino.setup Rails.env, application_root: Rails.root
+Casino.setup Rails.env, application_root: Rails.root

@@ -1,6 +1,6 @@
 require 'casino'
 
-class CASino::ApplicationController < ::ApplicationController
+class Casino::ApplicationController < ::ApplicationController
   include ApplicationHelper
 
   layout 'application'

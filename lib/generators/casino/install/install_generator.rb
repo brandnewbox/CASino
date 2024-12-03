@@ -1,4 +1,4 @@
-module CASino
+module Casino
   class InstallGenerator < Rails::Generators::Base
     source_root File.expand_path('../templates', __FILE__)
 
@@ -37,7 +37,7 @@ module CASino
     end
 
     def insert_engine_routes
-      route "mount CASino::Engine => '/', :as => 'casino'"
+      route "mount Casino::Engine => '/', :as => 'casino'"
     end
 
     def show_readme

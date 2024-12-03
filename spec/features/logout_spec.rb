@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'Logout' do
-  include CASino::Engine.routes.url_helpers
+  include Casino::Engine.routes.url_helpers
 
   subject { page }
 

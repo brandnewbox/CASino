@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe CASino::SessionsController do
-  include CASino::Engine.routes.url_helpers
+describe Casino::SessionsController do
+  include Casino::Engine.routes.url_helpers
 
-  routes { CASino::Engine.routes }
+  routes { Casino::Engine.routes }
 
   let(:params) { {} }
   let(:request_options) { {params: params} }
@@ -94,12 +94,12 @@ describe CASino::SessionsController do
         end
 
         it 'generates a service ticket' do
-          -> { get :new, **request_options }.should change(CASino::ServiceTicket, :count).by(1)
+          -> { get :new, **request_options }.should change(Casino::ServiceTicket, :count).by(1)
         end
 
         it 'does not set the issued_from_credentials flag on the service ticket' do
           get :new, **request_options
-          CASino::ServiceTicket.last.should_not be_issued_from_credentials
+          Casino::ServiceTicket.last.should_not be_issued_from_credentials
         end
 
         context 'with renew parameter' do
@@ -139,7 +139,7 @@ describe CASino::SessionsController do
         end
 
         it 'does not generate a service ticket' do
-          -> { get :new, **request_options }.should change(CASino::ServiceTicket, :count).by(0)
+          -> { get :new, **request_options }.should change(Casino::ServiceTicket, :count).by(0)
         end
 
         context 'with a changed browser' do
@@ -198,14 +198,14 @@ describe CASino::SessionsController do
         it 'creates session log' do
           expect do
             post :create, **request_options
-          end.to change { CASino::LoginAttempt.count }.by 1
+          end.to change { Casino::LoginAttempt.count }.by 1
         end
 
         it 'assigns session log the correct attributes' do
           post :create, **request_options
 
-          expect(CASino::LoginAttempt.last.user).to eq user
-          expect(CASino::LoginAttempt.last.successful).to eq false
+          expect(Casino::LoginAttempt.last.user).to eq user
+          expect(Casino::LoginAttempt.last.successful).to eq false
         end
       end
 
@@ -222,21 +222,21 @@ describe CASino::SessionsController do
 
         it 'saves user_ip' do
           post :create, **request_options
-          tgt = CASino::TicketGrantingTicket.last
+          tgt = Casino::TicketGrantingTicket.last
           tgt.user_ip.should == '0.0.0.0'
         end
 
         it 'creates session log' do
           expect do
             post :create, **request_options
-          end.to change { CASino::LoginAttempt.count }.by 1
+          end.to change { Casino::LoginAttempt.count }.by 1
         end
 
         it 'assigns session log the correct attributes' do
           post :create, **request_options
 
-          expect(CASino::LoginAttempt.last.user.username).to eq username
-          expect(CASino::LoginAttempt.last.successful).to eq true
+          expect(Casino::LoginAttempt.last.user.username).to eq username
+          expect(Casino::LoginAttempt.last.successful).to eq true
         end
 
         context 'with rememberMe set' do
@@ -254,13 +254,13 @@ describe CASino::SessionsController do
 
           it 'creates a long-term ticket-granting ticket' do
             post :create, **request_options
-            tgt = CASino::TicketGrantingTicket.last
+            tgt = Casino::TicketGrantingTicket.last
             tgt.long_term.should == true
           end
         end
 
         context 'with two-factor authentication enabled' do
-          let!(:user) { CASino::User.create! username: username, authenticator: authenticator }
+          let!(:user) { Casino::User.create! username: username, authenticator: authenticator }
           let!(:two_factor_authenticator) { FactoryBot.create :two_factor_authenticator, user: user }
 
           it 'renders the validate_otp template' do
@@ -283,8 +283,8 @@ describe CASino::SessionsController do
 
         context 'when all authenticators raise an error' do
           before(:each) do
-            CASino::StaticAuthenticator.any_instance.stub(:validate) do
-              raise CASino::Authenticator::AuthenticatorError, 'error123'
+            Casino::StaticAuthenticator.any_instance.stub(:validate) do
+              raise Casino::Authenticator::AuthenticatorError, 'error123'
             end
           end
 
@@ -303,27 +303,27 @@ describe CASino::SessionsController do
           end
 
           it 'generates a ticket-granting ticket' do
-            -> { post :create, **request_options }.should change(CASino::TicketGrantingTicket, :count).by(1)
+            -> { post :create, **request_options }.should change(Casino::TicketGrantingTicket, :count).by(1)
           end
 
           context 'when the user does not exist yet' do
             it 'generates exactly one user' do
-              -> { post :create, **request_options }.should change(CASino::User, :count).by(1)
+              -> { post :create, **request_options }.should change(Casino::User, :count).by(1)
             end
 
             it 'sets the users attributes' do
               post :create, **request_options
-              user = CASino::User.last
+              user = Casino::User.last
               user.username.should == username
               user.authenticator.should == authenticator
             end
           end
 
           context 'when the user already exists' do
-            let!(:user) { CASino::User.create! username: username, authenticator: authenticator }
+            let!(:user) { Casino::User.create! username: username, authenticator: authenticator }
 
             it 'does not regenerate the user' do
-              -> { post :create, **request_options }.should_not change(CASino::User, :count)
+              -> { post :create, **request_options }.should_not change(Casino::User, :count)
             end
 
             it 'updates the extra attributes' do
@@ -344,16 +344,16 @@ describe CASino::SessionsController do
           end
 
           it 'generates a service ticket' do
-            -> { post :create, **request_options }.should change(CASino::ServiceTicket, :count).by(1)
+            -> { post :create, **request_options }.should change(Casino::ServiceTicket, :count).by(1)
           end
 
           it 'does set the issued_from_credentials flag on the service ticket' do
             post :create, **request_options
-            CASino::ServiceTicket.last.should be_issued_from_credentials
+            Casino::ServiceTicket.last.should be_issued_from_credentials
           end
 
           it 'generates a ticket-granting ticket' do
-            -> { post :create, **request_options }.should change(CASino::TicketGrantingTicket, :count).by(1)
+            -> { post :create, **request_options }.should change(Casino::TicketGrantingTicket, :count).by(1)
           end
         end
       end
@@ -454,7 +454,7 @@ describe CASino::SessionsController do
 
       it 'deletes the ticket-granting ticket' do
         get :logout, **request_options
-        CASino::TicketGrantingTicket.where(id: ticket_granting_ticket.id).first.should.nil?
+        Casino::TicketGrantingTicket.where(id: ticket_granting_ticket.id).first.should.nil?
       end
 
       it 'renders the logout template' do
@@ -616,12 +616,12 @@ describe CASino::SessionsController do
       let(:params) { { id: ticket_granting_ticket.id } }
 
       it 'deletes exactly one ticket-granting ticket' do
-        -> { delete :destroy, **request_options }.should change(CASino::TicketGrantingTicket, :count).by(-1)
+        -> { delete :destroy, **request_options }.should change(Casino::TicketGrantingTicket, :count).by(-1)
       end
 
       it 'deletes the ticket-granting ticket' do
         delete :destroy, **request_options
-        CASino::TicketGrantingTicket.where(id: params[:id]).length.should == 0
+        Casino::TicketGrantingTicket.where(id: params[:id]).length.should == 0
       end
 
       it 'redirects to the session overview' do
@@ -633,7 +633,7 @@ describe CASino::SessionsController do
     context 'with an invalid ticket-granting ticket' do
       let(:params) { { id: 99_999 } }
       it 'does not delete a ticket-granting ticket' do
-        -> { delete :destroy, **request_options }.should_not change(CASino::TicketGrantingTicket, :count)
+        -> { delete :destroy, **request_options }.should_not change(Casino::TicketGrantingTicket, :count)
       end
 
       it 'redirects to the session overview' do
@@ -647,7 +647,7 @@ describe CASino::SessionsController do
       let(:params) { { id: ticket_granting_ticket.id } }
 
       it 'does not delete a ticket-granting ticket' do
-        -> { delete :destroy, **request_options }.should_not change(CASino::TicketGrantingTicket, :count)
+        -> { delete :destroy, **request_options }.should_not change(Casino::TicketGrantingTicket, :count)
       end
 
       it 'redirects to the session overview' do
@@ -672,7 +672,7 @@ describe CASino::SessionsController do
       end
 
       it 'deletes all other ticket-granting tickets' do
-        -> { get :destroy_others, **request_options }.should change(CASino::TicketGrantingTicket, :count).by(-3)
+        -> { get :destroy_others, **request_options }.should change(Casino::TicketGrantingTicket, :count).by(-3)
       end
 
       it 'redirects to the session overview' do
